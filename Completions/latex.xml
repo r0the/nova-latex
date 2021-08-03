@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<completions>
+
+    
+    <set name="latex.commands">
+        <completion string="\author" />
+        <completion string="\cite" />
+        <completion string="\date" />
+        <completion string="\documentclass" />
+        <completion string="\item" />
+        <completion string="\maketitle" />
+        <completion string="\newcommand" />
+        <completion string="\renewcommand" />
+        <completion string="\textbf" />
+        <completion string="\title" />
+        <completion string="\usepackage" />
+    </set>
+</completions>

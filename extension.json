@@ -1,0 +1,11 @@
+{
+    "identifier": "io.rothe.nova-latex",
+    "name": "LaTeX Language Definition",
+    "organization": "Stefan Rothe",
+    "description": "LaTeX language highlighting for Nova",
+    "version": "1.0",
+    "categories": ["languages"],
+    "activationEvents": [
+        "onLanguage:latex"
+    ]    
+}

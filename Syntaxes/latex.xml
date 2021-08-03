@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<syntax name="latex">
+    <meta>
+        <name>LaTeX</name>
+        <type>markup</type>
+        <preferred-file-extension>tex</preferred-file-extension>
+    </meta>
+    
+    <detectors>
+        <extension priority="1.0">tex</extension>
+    </detectors>
+    
+    <indentation>
+        <increase>
+            <expression>\\begin\{[A-Za-z]*\}</expression>
+        </increase>
+        <decrease>
+            <expression>\\end\{[A-Za-z]*\}</expression>
+        </decrease>
+    </indentation>
+    
+    <comments>
+        <single>%</single>
+    </comments>
+
+    <brackets>
+        <pair open="{" close="}" />
+    </brackets>
+    
+    <surrounding-pairs>
+        <pair open="[" close="]" />
+        <pair open="(" close=")" />
+        <pair open="&quot;" close="&quot;" />
+        <pair open="&apos;" close="&apos;" />
+    </surrounding-pairs>
+
+    <scopes>
+        <scope name="latex.single.comment">
+            <starts-with>
+                <expression>%</expression>
+            </starts-with>
+            <ends-with>
+                <expression>$</expression>
+            </ends-with>
+        </scope>
+    
+        <scope name="latex.command.simple">
+            <expression>(\\[A-Za-z]+)\s</expression>
+            <capture number="1" name="latex.identifier.function" />
+        </scope>
+
+        <scope name="latex.environment">
+            <starts-with>
+                <expression>(\\begin)(\{)([A-Za-z]+)(\})</expression>
+                <capture number="1" name="latex.keyword.begin" />
+                <capture number="2" name="latex.bracket.open" />
+                <capture number="3" name="latex.identifier.type" />
+                <capture number="4" name="latex.bracket.close" />
+            </starts-with>
+            <ends-with>
+                <expression>(\\end)(\{)([A-Za-z]+)(\})</expression>
+                <capture number="1" name="latex.keyword.end" />
+                <capture number="2" name="latex.bracket.open" />
+                <capture number="3" name="latex.identifier.type" />
+                <capture number="4" name="latex.bracket.close" />
+            </ends-with>
+            <subscopes>
+                <include syntax="self" />
+            </subscopes>
+        </scope>
+
+    </scopes>
+    
+</syntax>
