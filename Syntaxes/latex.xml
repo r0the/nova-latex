@@ -5,11 +5,11 @@
         <type>markup</type>
         <preferred-file-extension>tex</preferred-file-extension>
     </meta>
-    
+
     <detectors>
         <extension priority="1.0">tex</extension>
     </detectors>
-    
+
     <indentation>
         <increase>
             <expression>\\begin\{[A-Za-z]*\}</expression>
@@ -18,7 +18,7 @@
             <expression>\\end\{[A-Za-z]*\}</expression>
         </decrease>
     </indentation>
-    
+
     <comments>
         <single>%</single>
     </comments>
@@ -26,7 +26,7 @@
     <brackets>
         <pair open="{" close="}" />
     </brackets>
-    
+
     <surrounding-pairs>
         <pair open="[" close="]" />
         <pair open="(" close=")" />
@@ -35,40 +35,91 @@
     </surrounding-pairs>
 
     <scopes>
-        <scope name="latex.single.comment">
-            <starts-with>
-                <expression>%</expression>
-            </starts-with>
-            <ends-with>
-                <expression>$</expression>
-            </ends-with>
-        </scope>
-    
-        <scope name="latex.command.simple">
-            <expression>(\\[A-Za-z]+)\s</expression>
-            <capture number="1" name="latex.identifier.function" />
-        </scope>
-
-        <scope name="latex.environment">
-            <starts-with>
-                <expression>(\\begin)(\{)([A-Za-z]+)(\})</expression>
-                <capture number="1" name="latex.keyword.begin" />
-                <capture number="2" name="latex.bracket.open" />
-                <capture number="3" name="latex.identifier.type" />
-                <capture number="4" name="latex.bracket.close" />
-            </starts-with>
-            <ends-with>
-                <expression>(\\end)(\{)([A-Za-z]+)(\})</expression>
-                <capture number="1" name="latex.keyword.end" />
-                <capture number="2" name="latex.bracket.open" />
-                <capture number="3" name="latex.identifier.type" />
-                <capture number="4" name="latex.bracket.close" />
-            </ends-with>
-            <subscopes>
-                <include syntax="self" />
-            </subscopes>
-        </scope>
-
+        <include syntax="self" collection="comments" />
+        <include syntax="self" collection="format" />
+        <include syntax="self" collection="commands.builtin" />
     </scopes>
-    
+
+    <collections>
+        <collection name="comments">
+            <scope name="latex.comment.single" spell-check="true">
+                <expression>(%)(.*)$</expression>
+                <capture number="1" name="latex.punctuation.definition.begin" />
+                <capture number="2" name="latex.comment.content" />
+            </scope>
+        </collection>
+
+        <collection name="commands.builtin">
+            <scope name="latex.command">
+                <starts-with>
+                    <expression>(\\(?:documentclass|include|input|usepackage))</expression>
+                    <capture number="1" name="latex.command.keyword" />
+                </starts-with>
+                <ends-with />
+                <subscopes anchored="true">
+                    <include syntax="self" collection="optional-arg" optional="true" />
+                    <include syntax="self" collection="mandatory-arg" />
+                </subscopes>
+            </scope>
+        </collection>
+
+        <collection name="format">
+            <scope name="latex.markup.bold">
+                <starts-with>
+                    <expression>(\\textbf)\{</expression>
+                    <capture number="1" name="latex.command.keyword" />
+                </starts-with>
+                <ends-with>
+                    <expression>\}</expression>
+                </ends-with>
+                <subscopes>
+                    <include syntax="self" collection="comments" />
+                    <include syntax="self" collection="format" />
+                    <include syntax="self" collection="commands.builtin" />
+                </subscopes>
+            </scope>
+            <scope name="latex.markup.italic">
+                <starts-with>
+                    <expression>(\\textit)\{</expression>
+                    <capture number="1" name="latex.command.keyword" />
+                </starts-with>
+                <ends-with>
+                    <expression>\}</expression>
+                </ends-with>
+                <subscopes>
+                    <include syntax="self" collection="comments" />
+                    <include syntax="self" collection="format" />
+                    <include syntax="self" collection="commands.builtin" />
+                </subscopes>
+            </scope>
+        </collection>
+
+        <collection name="optional-arg">
+            <scope name="latex.argument.optional">
+                <expression>(\[)([^\[]*)(\])</expression>
+                <capture number="1" name="latex.punctuation.bracket.open" />
+                <capture number="2" name="latex.identifier.type" />
+                <capture number="3" name="latex.punctuation.bracket.close" />
+            </scope>
+        </collection>
+
+        <collection name="mandatory-arg">
+            <scope name="latex.arg.mandatory">
+                <expression>(\{)([^\{]*)(\})</expression>
+                <capture number="1" name="latex.punctuation.bracket.open" />
+                <capture number="2" name="latex.identifier.function" />
+                <capture number="3" name="latex.punctuation.bracket.close" />
+            </scope>
+        </collection>
+
+        <collection name="keywords">
+            <scope name="latex.keyword">
+                <strings>
+                    <string>documentclass</string>
+                    <string>usepackage</string>
+                    <string>usepackage</string>
+                </strings>
+            </scope>
+        </collection>
+    </collections>
 </syntax>
